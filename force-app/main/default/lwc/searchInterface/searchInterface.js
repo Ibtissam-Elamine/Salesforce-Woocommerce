@@ -38,7 +38,7 @@ export default class SearchInterface extends LightningElement {
         { label: 'Product', value: 'wc_product__c' }
     ];
     get inputClass() {
-        return this.isInvalid ? 'input-error' : 'input-valid';
+        // return this.isInvalid ? 'input-error' : 'input-valid';
     }
   
     // Wire methods to fetch picklist values for the wc_product__c object fields
@@ -80,7 +80,7 @@ export default class SearchInterface extends LightningElement {
     handleSearchKeyChange(event) {
         this.searchKey = event.target.value;
         // Check if the search key length is less than 3
-        this.isInvalid = this.searchKey.length < 3;
+        // this.isInvalid = this.searchKey.length < 3;
     }
 
     handleCellChange(event) {

@@ -131,7 +131,7 @@ public with sharing class WC_SearchController {
 
   private static Boolean matchesSearchCriteria(WcCustomer customer, String key) {
       return customer.email.contains(key) || customer.first_name.contains(key) ||
-             customer.last_name.contains(key) || String.valueOf(customer.id).contains(key);
+             customer.last_name.contains(key) || String.valueOf(customer.id).equalsIgnoreCase(key);
   }
 
 

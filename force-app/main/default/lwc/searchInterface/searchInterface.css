@@ -1,0 +1,8 @@
+/* searchInterface.css */
+.input-error  {
+   color: red; 
+}
+
+.input-valid {
+    color: black ;
+}

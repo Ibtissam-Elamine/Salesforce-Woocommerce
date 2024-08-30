@@ -1,0 +1,46 @@
+<template>
+    <!-- Composant de recherche -->
+    <lightning-combobox
+        label="Select Object"
+        placeholder="Select an object"
+        options={objectOptions}
+        value={selectedObject}
+        onchange={handleObjectChange}>
+    </lightning-combobox>
+
+    <lightning-input if:true={selectedObject}
+        label="Search by ID or External ID" 
+        value={searchKey} 
+        onchange={handleSearchKeyChange}
+        class={inputClass}>
+        
+    </lightning-input>
+
+    <lightning-button if:true={selectedObject}
+        label="Search" 
+        onclick={handleSearch} 
+        disabled={isInvalid}
+        class="slds-var-m-top_medium">
+    </lightning-button>
+
+    <template if:true={searchResult}>
+        <div class="slds-var-m-top_medium">
+            <lightning-card title="Search Results">
+                <div class="slds-m-around_medium">
+                    <lightning-datatable
+                        key-field="id"
+                        data={searchResult}
+                        columns={columns}
+                        onsave={handleSave}
+                        draft-values={draftValues}
+                        is-editable={isEditable}
+                        errors={errors}
+                        oncellchange={handleCellChange}>
+                    </lightning-datatable>
+                </div>
+            </lightning-card>
+         
+        </div>
+    </template>
+    
+</template>

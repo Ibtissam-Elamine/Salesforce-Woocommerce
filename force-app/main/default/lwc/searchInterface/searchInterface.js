@@ -218,7 +218,7 @@ export default class SearchInterface extends LightningElement {
                     { label: 'Billing Address', fieldName: 'billing_address' },
                     { label: 'Shipping Address', fieldName: 'shipping_address' },
                     { label: 'Last Order Date' , fieldName: 'lastOrderDate' , editable: true , type : 'date'},
-                    { label: 'Total Orders' , fieldName: 'totalOrders'}
+                    { label: 'Total Orders' , fieldName: 'totalOrders' , editable : true}
                 ];
             case 'wc_order__c':
                 return [

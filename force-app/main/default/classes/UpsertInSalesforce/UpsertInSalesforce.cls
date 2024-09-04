@@ -128,7 +128,7 @@ public with sharing class UpsertInSalesforce {
              String idValue = (String)recordData.get('id');
              Decimal externalId=Decimal.valueOf(idValue);
              System.debug('externalId ' + externalId);
-               existingOrders = [SELECT Id, Customer__c , WC_number__c , WC_status__c , wc_currency__c ,  WC_totale__c , WC_paymentMethod__c , WC_DatePaid__c FROM wc_Order__c WHERE WC_id__c = :externalId LIMIT 1];
+               existingOrders = [SELECT Id, Customer__c , WC_number__c , WC_status__c , wc_currency__c ,  WC_total__c , WC_paymentMethod__c , WC_DatePaid__c FROM wc_Order__c WHERE WC_id__c = :externalId LIMIT 1];
                 if (!existingOrders.isEmpty()) {
                     orderRecord = existingOrders[0];
                 } else {
@@ -139,7 +139,7 @@ public with sharing class UpsertInSalesforce {
                   orderRecord.WC_number__c = Decimal.valueOf((String)recordData.get('order_number'));
                   orderRecord.WC_status__c=(String)recordData.get('status');
                   orderRecord.wc_currency__c  = (String)recordData.get('currency');
-                  orderRecord.WC_totale__c = Decimal.valueOf((String)recordData.get('total'));
+                  orderRecord.WC_total__c = Decimal.valueOf((String)recordData.get('total'));
                   orderRecord.WC_paymentMethod__c  = (String)recordData.get('payment_method');
                   String dateString = (String) recordData.get('date_paid');
 

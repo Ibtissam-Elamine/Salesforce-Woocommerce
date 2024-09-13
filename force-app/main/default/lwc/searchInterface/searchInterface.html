@@ -31,15 +31,16 @@
                         key-field="id"
                         data={searchResult}
                         columns={columns}
-                        onsave={handleSave}
-                        draft-values={draftValues}
-                        is-editable={isEditable}
-                        errors={errors}
-                        oncellchange={handleCellChange}>
+                        onrowaction={handleRowAction}
+                        errors={errors}>
                     </lightning-datatable>
                 </div>
             </lightning-card>
-         
         </div>
+        <p class="info-text">
+            <span class="note-label">Note:</span> If the "Synchronize" button is clickable and blue, it means the record exists in Salesforce.
+            If the button is disabled, the record does not exist in Salesforce and needs to be added.
+        </p>
     </template>
+    
 </template>

@@ -1,8 +1,17 @@
-/* searchInterface.css */
-.input-error  {
-   color: red; 
+/* .css file */
+.info-text {
+    font-size: 14px;
+    color: #333;
+    background-color: #f9f9f9; /* Light gray background for contrast */
+    padding: 10px;
+    border-radius: 5px; /* Rounded corners */
+    border-left: 4px solid #d20000; /* Salesforce blue border on the left */
+    margin-top: 20px;
+    line-height: 1.5; /* Better line spacing */
 }
 
-.input-valid {
-    color: black ;
+.note-label {
+    font-weight: bold;
+    color: #d20000; /* Salesforce blue for the "Note:" label */
+    margin-right: 5px;
 }

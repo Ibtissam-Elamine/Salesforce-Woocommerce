@@ -19,7 +19,7 @@ public with sharing class WC_SearchController {
       return results;
   }
 
-  private static List<Object> searchCustomers(String key) {
+  public static List<Object> searchCustomers(String key) {
       List<Object> customerResults = new List<Object>();
       List<WcCustomer> customers = WooCommerceService.getCustomers();
       
@@ -29,6 +29,14 @@ public with sharing class WC_SearchController {
               Address billingAddress = customer.billing;
               Address shippingAddress = customer.shipping;
               WooCommerceService.populateOrderDetails(customer);
+              System.debug('logLevel'+ customer.id);
+              Map<String, Object> customerInfo = CheckController.checkIfCustomertExists(customer.id);
+              Boolean exists = (Boolean)customerInfo.get('exists');
+              String formattedDate ;
+              DateTime lastSyncDate = (DateTime)customerInfo.get('LastSyncDate');
+              if(lastSyncDate != null){
+              formattedDate = lastSyncDate.format('yyyy-MM-dd HH:mm:ss');}
+              System.debug('lastDate'+ lastSyncDate);
               customerResults.add(new Map<String, Object>{
                   'id' => customer.id,
                   'first_name' => customer.first_name,
@@ -39,18 +47,29 @@ public with sharing class WC_SearchController {
                   'billing_address' => billingAddress.getFormattedAddress(),
                   'shipping_address' => shippingAddress.getFormattedAddress(),
                   'lastOrderDate' =>customer.lastOrderDate,
-                  'totalOrders'   => customer.totalOrders
-              });
+                  'totalOrders'   => customer.totalOrders,
+                  'LastSyncDate'  => LastSyncDate,
+                  'isExistingInSalesforce' => exists,
+                  'LastSyncDate' => formattedDate
+          });
           }
+
       }
       return customerResults;
   }
 
-  private static List<Object> searchOrders(String key) {
+  public static List<Object> searchOrders(String key) {
       List<Object> orderResults = new List<Object>();
       List<WcOrder> orders = WooCommerceService.getOrdersByCustomer(Integer.valueOf(key));
       
       for (WcOrder order : orders) {
+        Map<String, Object> orderInfo = CheckController.checkIfOrdertExists(order.id);
+        Boolean exists = (Boolean)orderInfo.get('exists');
+        String formattedDate ;
+        DateTime lastSyncDate = (DateTime)orderInfo.get('LastSyncDate');
+        if(lastSyncDate != null){
+        formattedDate = lastSyncDate.format('yyyy-MM-dd HH:mm:ss');}
+        System.debug('lastDate'+ lastSyncDate);
           Map<String, Object> orderData = new Map<String, Object>();
           orderData.put('id', order.id);
           orderData.put('customer_id', order.customer_id);
@@ -60,18 +79,28 @@ public with sharing class WC_SearchController {
           orderData.put('total', order.total);
           orderData.put('payment_method', order.payment_method);
           orderData.put('date_paid', order.date_paid);
+          orderData.put('LastSyncDate' , formattedDate);
+          orderData.put('isExistingInSalesforce', exists);
 
           orderResults.add(orderData);
       }
       return orderResults;
   }
 
-  private static List<Object> searchProducts(String key) {
+  public static List<Object> searchProducts(String key) {
       List<Object> productResults = new List<Object>();
       List<WcProduct> products=WooCommerceService.getProducts();
       
       for (WcProduct product : products) {
         if(product.name.contains(key) ||String.valueOf(product.id).contains(key) || String.valueOf(product.status).contains(key)){
+
+              Map<String, Object> productInfo = CheckController.checkIfProductExists(product.id);
+              Boolean exists = (Boolean)productInfo.get('exists');
+              String formattedDate ;
+              DateTime lastSyncDate = (DateTime)productInfo.get('LastSyncDate');
+              if(lastSyncDate != null){
+              formattedDate = lastSyncDate.format('yyyy-MM-dd HH:mm:ss');}
+              System.debug('lastDate'+ lastSyncDate);
           Map<String, Object> productData = new Map<String, Object>();
           productData.put('id', product.id);
           productData.put('name', product.name);
@@ -80,7 +109,8 @@ public with sharing class WC_SearchController {
           productData.put('status',product.status);
           productData.put('total_sales',product.total_sales);
           productData.put('purchasable',product.purchasable);
-
+          productData.put('isExistingInSalesforce', exists);
+          productData.put('LastSyncDate', formattedDate);
           // Concatenate category names from category objects
           String categoryNames = '';
           for (WcProductCategory category : product.categories) {
@@ -100,7 +130,7 @@ public with sharing class WC_SearchController {
       return productResults;
   }
 
-  private static List<Object> searchInventories(String key){
+  public static List<Object> searchInventories(String key){
     List<Object> inventoryResult = new List<Object>();
     WCInventory inventory = WooCommerceService.getInventoryById(Integer.valueOf(key));
 
@@ -119,7 +149,7 @@ public with sharing class WC_SearchController {
 
   }
 
-  private static List<WcProduct> filterProductsByName(List<WcProduct> products, String key) {
+  public static List<WcProduct> filterProductsByName(List<WcProduct> products, String key) {
       List<WcProduct> filteredProducts = new List<WcProduct>();
       for (WcProduct product : products) {
           if (product.name != null && product.name.contains(key)) {
@@ -129,9 +159,8 @@ public with sharing class WC_SearchController {
       return filteredProducts;
   }
 
-  private static Boolean matchesSearchCriteria(WcCustomer customer, String key) {
-      return customer.email.contains(key) || customer.first_name.contains(key) ||
-             customer.last_name.contains(key) || String.valueOf(customer.id).contains(key);
+  public static Boolean matchesSearchCriteria(WcCustomer customer, String key) {
+      return String.valueOf(customer.id).contains(key);
   }
 
 
